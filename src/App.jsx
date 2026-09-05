@@ -112,7 +112,7 @@ export default function App() {
             ) : (
               <span className="w-2" />
             )}
-            <Title level={4} className="!mb-0">
+            <Title level={4} className="mb-0">
               🏨 <span className="text-gray-700">Hotel Chinese</span>
             </Title>
           </div>
@@ -122,7 +122,7 @@ export default function App() {
           <div className="max-w-5xl mx-auto">{renderPage()}</div>
         </main>
 
-        <footer className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 sticky bottom-0 z-10 shadow-[0_-2px_8px_rgba(0,0,0,0.15)]">
+        <footer className="bg-linear-to-r from-blue-100 via-blue-300 to-blue-500 sticky bottom-0 z-10 shadow-[0_-2px_8px_rgba(0,0,0,0.15)]">
           <style>{`
             @keyframes navPop {
               0% { transform: scale(0.8); }
