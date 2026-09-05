@@ -21,15 +21,20 @@ import ProgressPage from './components/ProgressPage';
 
 const { Title } = Typography;
 
+// Each section gets its own accent color so the footer reads as a colorful,
+// easy-to-scan bar rather than a flat gray list — color is always visible
+// (not just on the active tab), with the active tab getting the fully
+// saturated color plus an underline, and inactive tabs a muted tint of the
+// same color so every icon still stands out.
 const NAV_ITEMS = [
-  { key: 'lessons', icon: <BookOutlined />, label: 'Lessons' },
-  { key: 'vocabulary', icon: <ReadOutlined />, label: 'Vocabulary' },
-  { key: 'sentences', icon: <MessageOutlined />, label: 'Sentences' },
-  { key: 'listening', icon: <SoundOutlined />, label: 'Listening' },
-  { key: 'speaking', icon: <AudioOutlined />, label: 'Speaking' },
-  { key: 'quiz', icon: <QuestionCircleOutlined />, label: 'Quiz' },
-  { key: 'review', icon: <ReloadOutlined />, label: 'Review' },
-  { key: 'progress', icon: <BarChartOutlined />, label: 'Progress' },
+  { key: 'lessons', icon: <BookOutlined />, label: 'Lessons', color: '#f59e0b' },
+  { key: 'vocabulary', icon: <ReadOutlined />, label: 'Vocabulary', color: '#10b981' },
+  { key: 'sentences', icon: <MessageOutlined />, label: 'Sentences', color: '#3b82f6' },
+  { key: 'listening', icon: <SoundOutlined />, label: 'Listening', color: '#8b5cf6' },
+  { key: 'speaking', icon: <AudioOutlined />, label: 'Speaking', color: '#ec4899' },
+  { key: 'quiz', icon: <QuestionCircleOutlined />, label: 'Quiz', color: '#06b6d4' },
+  { key: 'review', icon: <ReloadOutlined />, label: 'Review', color: '#f97316' },
+  { key: 'progress', icon: <BarChartOutlined />, label: 'Progress', color: '#6366f1' },
 ];
 
 export default function App() {
@@ -65,7 +70,7 @@ export default function App() {
       <div className="min-h-screen flex flex-col bg-gray-50">
         <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
           <div className="max-w-5xl mx-auto px-6 py-3">
-            <Title level={4} className="mb-0">
+            <Title level={4} className="!mb-0">
               🏨 <span className="text-gray-700">Hotel Chinese</span>
             </Title>
           </div>
@@ -83,15 +88,19 @@ export default function App() {
                 <button
                   key={item.key}
                   onClick={() => setPage(item.key)}
-                  className={`flex flex-col items-center justify-center gap-0.5 py-2 px-1 text-[11px] leading-tight text-center transition-colors
-                    ${isActive ? 'text-sky-700' : 'text-gray-500 hover:text-gray-700'}
-                  `}
+                  className="flex flex-col items-center justify-center gap-0.5 py-2 px-1 text-[11px] leading-tight text-center transition-colors"
+                  style={{ color: isActive ? item.color : `${item.color}99` }}
                 >
-                  <span className={`text-lg ${isActive ? 'text-sky-700' : 'text-gray-400'}`}>
+                  <span className="text-lg" style={{ color: isActive ? item.color : `${item.color}99` }}>
                     {item.icon}
                   </span>
-                  <span className={isActive ? 'font-medium' : ''}>{item.label}</span>
-                  {isActive && <span className="mt-0.5 h-0.5 w-6 rounded-full bg-sky-700" />}
+                  <span className={isActive ? 'font-semibold' : ''}>{item.label}</span>
+                  {isActive && (
+                    <span
+                      className="mt-0.5 h-0.5 w-6 rounded-full"
+                      style={{ backgroundColor: item.color }}
+                    />
+                  )}
                 </button>
               );
             })}
