@@ -4,6 +4,14 @@ import { SoundOutlined, SearchOutlined } from '@ant-design/icons';
 import lessons from '../data/lessons';
 import { speakChinese } from '../utils/speech';
 
+// Ant Design's default list border is a thin 1px line that's easy to miss
+// when scanning quickly — bumping both the outer container border and the
+// per-item dividers to 2px makes each entry much easier to tell apart at a
+// glance. Tailwind's `!` (important) modifier is needed since antd's own
+// border rules would otherwise win on specificity.
+const thickBorderListClass = '[&.ant-list-bordered]:!border-2 [&.ant-list-bordered]:!border-gray-300 [&_.ant-list-item]:!border-gray-300';
+const thickBorderItemClass = '!border-b-2';
+
 export default function SentencesPage() {
   const [query, setQuery] = useState('');
 
@@ -50,9 +58,11 @@ export default function SentencesPage() {
       ) : (
         <List
           bordered
+          className={thickBorderListClass}
           dataSource={filtered}
           renderItem={(item) => (
             <List.Item
+              className={thickBorderItemClass}
               actions={[
                 <Button
                   key="play"

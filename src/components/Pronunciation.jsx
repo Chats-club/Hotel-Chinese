@@ -34,6 +34,14 @@ export default function Pronunciation({ vocab, sentences, toneDrills, onComplete
     [vocab, sentences]
   );
 
+  // Ant Design's default list border is a thin 1px line that's easy to miss
+  // when scanning quickly — bumping both the outer container border and the
+  // per-item dividers to 2px makes each word/sentence block much easier to
+  // tell apart at a glance. Tailwind's `!` (important) modifier is needed
+  // since antd's own border rules would otherwise win on specificity.
+  const thickBorderListClass = '[&.ant-list-bordered]:!border-2 [&.ant-list-bordered]:!border-gray-300 [&_.ant-list-item]:!border-gray-300';
+  const thickBorderItemClass = '!border-b-2';
+
   return (
     <div className="flex flex-col gap-5">
       {!supported && (
@@ -58,7 +66,7 @@ export default function Pronunciation({ vocab, sentences, toneDrills, onComplete
             {toneDrills.map((drill, i) => (
               <div
                 key={i}
-                className="flex items-center gap-2 flex-wrap border border-gray-200 rounded-lg px-3 py-2"
+                className="flex items-center gap-2 flex-wrap border-2 border-gray-300 rounded-lg px-3 py-2"
               >
                 {drill.pinyinRow.map((syl, j) => (
                   <Button
@@ -82,9 +90,11 @@ export default function Pronunciation({ vocab, sentences, toneDrills, onComplete
         <List
           size="small"
           bordered
+          className={thickBorderListClass}
           dataSource={wordsWithExamples}
           renderItem={(item) => (
             <List.Item
+              className={thickBorderItemClass}
               actions={[
                 <Button
                   key="play"
@@ -105,7 +115,7 @@ export default function Pronunciation({ vocab, sentences, toneDrills, onComplete
                 </span>
 
                 {item.example && (
-                  <div className="mt-2 ml-1 pl-3 border-l-2 border-gray-200 flex items-start justify-between gap-2">
+                  <div className="mt-2 ml-1 pl-3 border-l-4 border-gray-300 flex items-start justify-between gap-2">
                     <div>
                       <div className="hanzi text-base text-gray-700">{item.example.hanzi}</div>
                       <div className="text-blue-600 text-sm">{item.example.pinyin}</div>
@@ -131,9 +141,11 @@ export default function Pronunciation({ vocab, sentences, toneDrills, onComplete
         <List
           size="small"
           bordered
+          className={thickBorderListClass}
           dataSource={sentences}
           renderItem={(item) => (
             <List.Item
+              className={thickBorderItemClass}
               actions={[
                 <Button
                   key="play"
