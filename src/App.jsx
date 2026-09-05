@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ConfigProvider, Typography } from 'antd';
+import { ConfigProvider, Typography, Button } from 'antd';
 import {
   BookOutlined,
   ReadOutlined,
@@ -9,6 +9,7 @@ import {
   QuestionCircleOutlined,
   ReloadOutlined,
   BarChartOutlined,
+  ArrowLeftOutlined,
 } from '@ant-design/icons';
 import LessonsPage from './components/LessonsPage';
 import VocabularyPage from './components/VocabularyPage';
@@ -20,6 +21,8 @@ import ReviewPage from './components/ReviewPage';
 import ProgressPage from './components/ProgressPage';
 
 const { Title } = Typography;
+
+const HOME_KEY = 'lessons';
 
 // Each section gets its own accent color so the footer reads as a colorful,
 // easy-to-scan bar rather than a flat gray list — color is always visible
@@ -38,9 +41,33 @@ const NAV_ITEMS = [
 ];
 
 export default function App() {
-  const [page, setPage] = useState('lessons');
+  const [page, setPage] = useState(HOME_KEY);
+  // Simple one-level-at-a-time navigation history, so every page can offer
+  // a "Back" action that returns to wherever the person actually came from
+  // (not always straight to Lessons), the same way a mobile app's back
+  // button behaves.
+  const [history, setHistory] = useState([]);
   const [, forceRender] = useState(0);
   const refresh = () => forceRender((n) => n + 1);
+
+  function navigateTo(key) {
+    if (key === page) return;
+    setHistory((h) => [...h, page]);
+    setPage(key);
+  }
+
+  function goBack() {
+    setHistory((h) => {
+      if (h.length === 0) {
+        setPage(HOME_KEY);
+        return h;
+      }
+      const next = [...h];
+      const previous = next.pop();
+      setPage(previous);
+      return next;
+    });
+  }
 
   function renderPage() {
     switch (page) {
@@ -65,12 +92,26 @@ export default function App() {
     }
   }
 
+  const showBack = page !== HOME_KEY;
+
   return (
     <ConfigProvider theme={{ token: { colorPrimary: '#0369a1', borderRadius: 12 } }}>
       <div className="min-h-screen flex flex-col bg-gray-50">
         <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-          <div className="max-w-5xl mx-auto px-6 py-3">
-            <Title level={4} className="!mb-0">
+          <div className="max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-3 flex items-center gap-2">
+            {showBack ? (
+              <Button
+                type="text"
+                icon={<ArrowLeftOutlined />}
+                onClick={goBack}
+                aria-label="Back"
+              >
+                <span className="hidden sm:inline">Back</span>
+              </Button>
+            ) : (
+              <span className="w-2" />
+            )}
+            <Title level={4} className="mb-0">
               🏨 <span className="text-gray-700">Hotel Chinese</span>
             </Title>
           </div>
@@ -87,14 +128,14 @@ export default function App() {
               return (
                 <button
                   key={item.key}
-                  onClick={() => setPage(item.key)}
+                  onClick={() => navigateTo(item.key)}
                   className="flex flex-col items-center justify-center gap-0.5 py-2 px-1 text-[11px] leading-tight text-center transition-colors"
                   style={{ color: isActive ? item.color : `${item.color}99` }}
                 >
                   <span className="text-lg" style={{ color: isActive ? item.color : `${item.color}99` }}>
                     {item.icon}
                   </span>
-                  <span className={isActive ? 'font-semibold' : ''}>{item.label}</span>
+                  <span className={isActive ? 'font-bold' : 'font-medium'}>{item.label}</span>
                   {isActive && (
                     <span
                       className="mt-0.5 h-0.5 w-6 rounded-full"
