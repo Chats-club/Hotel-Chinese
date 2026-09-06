@@ -122,7 +122,7 @@ export default function App() {
           <div className="max-w-5xl mx-auto">{renderPage()}</div>
         </main>
 
-        <footer className="bg-linear-to-r from-blue-100 via-blue-300 to-blue-500 sticky bottom-0 z-10 shadow-[0_-2px_8px_rgba(0,0,0,0.15)]">
+        <footer className="bg-linear-to-r bg-black sticky bottom-0 z-10 shadow-[0_-2px_8px_rgba(0,0,0,0.15)]">
           <style>{`
             @keyframes navPop {
               0% { transform: scale(0.8); }
